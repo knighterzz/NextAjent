@@ -1,0 +1,102 @@
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box}
+
+
+
+
+.akun {
+    order: 2;
+}
+
+button {
+    margin-left: 20px;
+    padding: 9px 25px;
+    background-color:white;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+.confirm button{
+    margin: 1em 0;
+    padding: 14px 15px;
+    background-color: #04979c;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    width: 50%;
+    opacity: 0.9;
+}
+
+button:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+
+input[type=text], input[type=password], input[type=email]  {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for all buttons */
+
+
+button:hover {
+  opacity:1;
+  color: black; 
+}
+
+/* cancel */
+.cancelbtn {
+  padding: 14px 15px;
+  background-color: #525b5c;
+}
+
+
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
+}
+
+
+.container {
+  padding: 70px;
+}
+
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 10% auto; 
+    border: 1px solid #888;
+    width: 35%; 
+    height: auto;
+}
+
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+     width: 100%;
+  }
+}
