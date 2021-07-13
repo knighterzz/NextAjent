@@ -20,6 +20,9 @@
 
 	$trendmenu = mysqli_query($con, "SELECT transaksi.id_menu, COUNT(transaksi.id), menu.nama FROM transaksi JOIN menu ON (transaksi.id_menu = menu.id) GROUP BY transaksi.id_menu ORDER BY COUNT(transaksi.id) DESC LIMIT 1");
 	$men = mysqli_fetch_assoc($trendmenu);
+
+	$grafMasuk = mysqli_query($con, "SELECT transaksi.tanggal as Tanggal, SUM(menu.harga) as Pemasukan FROM transaksi JOIN menu ON (transaksi.id_menu = menu.id) GROUP BY Tanggal");
+
 ?>
 <html lang="en">
   <head>
@@ -31,33 +34,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styleIndex.css">
     <script src="https://kit.fontawesome.com/c424c66699.js" crossorigin="anonymous"></script>
-    <!--Line Chart-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
 
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.js"></script>
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2013',  1000,      400],
-          ['2014',  1170,      460],
-          ['2015',  660,       1120],
-          ['2016',  1030,      540]
-        ]);
 
-        var options = {
-          title: 'Company Performance',
-          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
-    <!--End ofLine Chart-->
     <title>Fundamental - Dashboard</title>
   </head>
 
@@ -150,10 +130,11 @@
               </div>
             </div>
          </div>
-         <div class="row mt-4">
-          <h3>Grafik Keungan</h3>
-           <div id="chart_div" style="width: 900px; height: 600px;"></div>
-         </div>
+		 <div class="card">
+			<div class="body-card">
+				<canvas id="myChart" width="200" height="200"></canvas>
+			</div>
+		</div>
       </div>
     </div>
 
@@ -162,5 +143,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="scriptIndex.js"></script>
+		<script>
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var myChart = new Chart(ctx, {
+			    type: 'bar',
+			    data: {
+			        labels: ["2021-07-01", "2021-07-02", "2021-07-03", "2021-07-04", "2021-07-05", "2021-07-06"],
+			        datasets: [{
+			            label: 'PEMASUKAN',
+			            data: [47000, 577000, 291000, 495000, 592000, 415000],
+			            backgroundColor: [
+			                'rgba(54, 162, 235, 0.2)'
+			            ],
+			            borderColor: [
+			                'rgba(54, 162, 235, 1)',
+			            ],
+			            borderWidth: 1
+			        },{
+									label: 'PENGELUARAN',
+									data: [112000, 0, 0, 0, 15000, 0],
+									backgroundColor: [
+											'rgba(235, 40, 14, 0.2)'
+									],
+									borderColor: [
+											'rgba(235, 40, 14, 1)',
+									],
+									borderWidth: 1
+							},{
+			            label: 'KEUNTUNGAN',
+			            data: [-78400, 406400, 211700, 351900, 408900, 293900],
+			            backgroundColor: [
+			                'rgba(64, 158, 21, 0.2)'
+			            ],
+			            borderColor: [
+			                'rgba(64, 158, 21, 1)',
+			            ],
+			            borderWidth: 1
+
+							}]
+			    },
+			    options: {
+			        scales: {
+			            y: {
+			                beginAtZero: false
+			            }
+			        }
+			    }
+			});
+			</script>
   </body>
 </html>
