@@ -19,3 +19,10 @@
 .display-5{
   font-weight: bold;
 }
+
+
+
+canvas{
+  width:1500px !important;
+  height:900px !important;
+}

@@ -38,7 +38,7 @@
             <a class="nav-link active text-white" href="index.php"><i class="fas fa-columns mr-3"></i>Dashboard</a><hr class="bg-light">
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="tren.php"><i class="fas fa-book mr-3"></i>Laporan</a> <hr class="bg-light">
+            <a class="nav-link text-white" href="laporan.php"><i class="fas fa-book mr-3"></i>Laporan</a> <hr class="bg-light">
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="barang.php"><i class="fas fa-boxes mr-3"></i>Data Barang</a> <hr class="bg-light">

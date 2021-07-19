@@ -1,5 +1,15 @@
 <!doctype html>
 <?php
+
+	/*
+	--
+		NEXT UP
+		1. GRAFIK TREND MENU
+		2. GRAFIK JAM TRANSAKSI
+		3. GRAFIK PEMBELI HARIAN
+		4. GRAFIK KEDATANGAN MEMBER
+
+	*/
 	include ("auth_session.php");
 	require ("db.php");
 
@@ -21,8 +31,23 @@
 	$trendmenu = mysqli_query($con, "SELECT transaksi.id_menu, COUNT(transaksi.id), menu.nama FROM transaksi JOIN menu ON (transaksi.id_menu = menu.id) GROUP BY transaksi.id_menu ORDER BY COUNT(transaksi.id) DESC LIMIT 1");
 	$men = mysqli_fetch_assoc($trendmenu);
 
-	$grafMasuk = mysqli_query($con, "SELECT transaksi.tanggal as Tanggal, SUM(menu.harga) as Pemasukan FROM transaksi JOIN menu ON (transaksi.id_menu = menu.id) GROUP BY Tanggal");
+	$grafMasuk = mysqli_query($con, "SELECT transaksi.tanggal as Tanggal, SUM(menu.harga) as Pemasukan, SUM(menu.harga-menu.hpp) as Keuntungan FROM transaksi JOIN menu ON (transaksi.id_menu = menu.id) GROUP BY Tanggal");
+	$grafKeluar = mysqli_query($con, "SELECT barang.beli as Tanggal, SUM(barang.harga) as Pengeluaran FROM barang GROUP BY barang.beli");
 
+	$tanggal = array();
+	$masukan = array();
+	$keuntungan = array();
+	$keluaran = array();
+
+	while($row = mysqli_fetch_array($grafMasuk)){
+		array_push($tanggal, $row[0]);
+		array_push($masukan, $row[1]);
+		array_push($keuntungan, $row[2]);
+	}
+
+	while($row = mysqli_fetch_array($grafKeluar)){
+		array_push($keluaran, $row[0]);
+	}
 ?>
 <html lang="en">
   <head>
@@ -144,52 +169,42 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="scriptIndex.js"></script>
 		<script>
-			var ctx = document.getElementById('myChart').getContext('2d');
-			var myChart = new Chart(ctx, {
-			    type: 'bar',
-			    data: {
-			        labels: ["2021-07-01", "2021-07-02", "2021-07-03", "2021-07-04", "2021-07-05", "2021-07-06"],
-			        datasets: [{
-			            label: 'PEMASUKAN',
-			            data: [47000, 577000, 291000, 495000, 592000, 415000],
-			            backgroundColor: [
-			                'rgba(54, 162, 235, 0.2)'
-			            ],
-			            borderColor: [
-			                'rgba(54, 162, 235, 1)',
-			            ],
-			            borderWidth: 1
-			        },{
-									label: 'PENGELUARAN',
-									data: [112000, 0, 0, 0, 15000, 0],
-									backgroundColor: [
-											'rgba(235, 40, 14, 0.2)'
-									],
-									borderColor: [
-											'rgba(235, 40, 14, 1)',
-									],
-									borderWidth: 1
-							},{
-			            label: 'KEUNTUNGAN',
-			            data: [-78400, 406400, 211700, 351900, 408900, 293900],
-			            backgroundColor: [
-			                'rgba(64, 158, 21, 0.2)'
-			            ],
-			            borderColor: [
-			                'rgba(64, 158, 21, 1)',
-			            ],
-			            borderWidth: 1
+					var ctx = document.getElementById('myChart').getContext('2d');
+					var myChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					        labels: <?= json_encode($tanggal);?>,
+					        datasets: [{
+					            label: 'PEMASUKAN',
+					            data: <?= json_encode($masukan)?>,
+					            backgroundColor: [
+					                'rgba(54, 162, 235, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(54, 162, 235, 1)',
+					            ],
+					            borderWidth: 1
+					        },{
+					            label: 'KEUNTUNGAN',
+					            data: <?= json_encode($keuntungan)?>,
+					            backgroundColor: [
+					                'rgba(64, 158, 21, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(64, 158, 21, 1)',
+					            ],
+					            borderWidth: 1
 
-							}]
-			    },
-			    options: {
-			        scales: {
-			            y: {
-			                beginAtZero: false
-			            }
-			        }
-			    }
-			});
+									}]
+					    },
+					    options: {
+					        scales: {
+					            y: {
+					                beginAtZero: false
+					            }
+					        }
+					    }
+					});
 			</script>
   </body>
 </html>
